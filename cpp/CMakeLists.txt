@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
 
 project(ahc)
 
+add_definitions(-DUSE_BOOST_SHARED_PTR)
+
 find_package(OpenCV REQUIRED)
 find_package(PCL 1.2 REQUIRED)
 

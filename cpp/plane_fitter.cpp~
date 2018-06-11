@@ -29,6 +29,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 
 #include <pcl/point_types.h>
+#include <pcl/io/openni_grabber.h>
 #include <pcl/io/openni2_grabber.h>
 #include <pcl/visualization/cloud_viewer.h>
 
@@ -110,14 +111,24 @@ public:
 	//start the main loop
 	void run (char* device_name)
 	{
-	        pcl::Grabber* grabber = new pcl::io::OpenNI2Grabber(device_name);
+	  std::cout << "run 0" << std::endl;
+	  //pcl::Grabber* grabber = new pcl::OpenNIGrabber();
+	  //pcl::Grabber* grabber = new pcl::OpenNIGrabber("2b03:f580");
+	  //pcl::Grabber* grabber = new pcl::OpenNI2Grabber(device_name);
+	  pcl::Grabber* grabber = new pcl::io::OpenNI2Grabber();
+		std::cout << "run 1" << std::endl;
+
 		boost::function<void (const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr&)> f =
 			boost::bind (&MainLoop::onNewCloud, this, _1);
+		std::cout << "run 2" << std::endl;
 
 		grabber->registerCallback(f);
+		std::cout << "run 3" << std::endl;
 
 		//grabbing loop
+		std::cout << "run 4" << std::endl;
 		grabber->start();
+		std::cout << "run 5" << std::endl;
 
 		cv::namedWindow("rgb");
 		cv::namedWindow("seg");

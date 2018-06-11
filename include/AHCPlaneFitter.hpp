@@ -132,7 +132,7 @@ namespace ahc {
 		//std::vector<std::vector<int>> blkMembership; //blkMembership[i] contains all block id for extractedPlanes[i]
 		bool dirtyBlkMbship;
 		std::vector<cv::Vec3b> colors;
-		std::vector<std::pair<int,int>> rfQueue;//for region grow/floodfill, p.first=pixidx, p.second=plid
+		std::vector<std::pair<int,int> > rfQueue;//for region grow/floodfill, p.first=pixidx, p.second=plid
 		bool drawCoarseBorder;
 		//std::vector<PlaneSeg::Stats> blkStats;
 #if defined(DEBUG_INIT) || defined(DEBUG_CLUSTER)
@@ -201,7 +201,7 @@ namespace ahc {
 		 *  \details this function corresponds to Algorithm 1 in our paper
 		 */
 		double run(const Image3D* pointsIn,
-			std::vector<std::vector<int>>* pMembership=0,
+			std::vector<std::vector<int> >* pMembership=0,
 			cv::Mat* pSeg=0,
 			const std::vector<int> * const pIdxMap=0, bool verbose=true)
 		{
@@ -254,6 +254,7 @@ namespace ahc {
 		/**
 		 *  \brief print out the current parameters
 		 */
+#if 0  // ToDo: This solution is not elegant. should be modified!
 		void logParams() const {
 #define TMP_LOG_VAR(var) << #var "="<<(var)<<"\n"
 			std::cout<<"[PlaneFitter] Parameters:\n"
@@ -277,6 +278,7 @@ namespace ahc {
 			TMP_LOG_VAR(doRefine)<<std::endl;
 #undef TMP_LOG_VAR
 		}
+#endif
 
 		/************************************************************************/
 		/* Protected Class Functions                                            */
@@ -287,7 +289,7 @@ namespace ahc {
 		 *  
 		 *  \details this function corresponds to Algorithm 4 in our paper; note: plane parameters of each extractedPlanes in the PlaneSeg is NOT updated after this call since the new points added from region grow and points removed from block erosion are not properly reflected in the PlaneSeg
 		 */
-		void refineDetails(std::vector<std::vector<int>> *pMembership, //pMembership->size()==nPlanes
+		void refineDetails(std::vector<std::vector<int> > *pMembership, //pMembership->size()==nPlanes
 			const std::vector<int> * const pIdxMap, //if pIdxMap!=0 pMembership->at(i).at(j)=pIdxMap(pixIdx)
 			cv::Mat* pSeg)
 		{
@@ -760,7 +762,7 @@ namespace ahc {
 			const int Nw   = this->width/this->windowWidth;
 
 			//1. init nodes
-			std::vector<PlaneSeg::Ptr> G(Nh*Nw,0);
+			std::vector<PlaneSeg::Ptr> G(Nh*Nw,NULL);
 			//this->blkStats.resize(Nh*Nw);
 
 #ifdef DEBUG_INIT

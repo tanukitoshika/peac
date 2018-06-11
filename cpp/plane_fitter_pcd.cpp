@@ -138,7 +138,7 @@ std::string getNameNoExtension(const std::string &fileName)
 }
 
 void iniLoad(std::string iniFileName) {
-	std::ifstream in(iniFileName);
+        std::ifstream in(iniFileName.c_str());
 	if(!in.is_open()) {
 		std::cout<<"[iniLoad] "<<iniFileName<<" not found, use default parameters!"<<std::endl;
 		return;
