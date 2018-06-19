@@ -33,6 +33,7 @@
 #include <pcl/visualization/cloud_viewer.h>
 
 #include "opencv2/opencv.hpp"
+#include "librealsense2/rs.hpp"
 
 #include "AHCPlaneFitter.hpp"
 
