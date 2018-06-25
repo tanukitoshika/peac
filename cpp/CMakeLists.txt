@@ -27,3 +27,11 @@ add_executable(plane_fitter_pcd plane_fitter_pcd.cpp)
 target_link_libraries(plane_fitter_pcd ${PCL_LIBRARIES} ${OpenCV_LIBS} ${realsense2_LIBRARY})
 install(TARGETS plane_fitter_pcd DESTINATION bin)
 install(FILES plane_fitter_pcd.ini DESTINATION bin)
+
+add_executable( Color_Depth realsense.h realsense.cpp main.cpp )
+target_link_libraries( Color_Depth ${realsense2_LIBRARY} )
+target_link_libraries( Color_Depth ${OpenCV_LIBS} )
+
+add_executable(plane_fitter_rs realsense.h realsense.cpp plane_fitter_rs.cpp)
+target_link_libraries(plane_fitter_rs ${PCL_LIBRARIES} ${OpenCV_LIBS} ${realsense2_LIBRARY})
+install(TARGETS plane_fitter_rs DESTINATION bin)
