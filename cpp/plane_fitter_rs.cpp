@@ -28,12 +28,9 @@
 #pragma warning(disable: 4819)
 #define _CRT_SECURE_NO_WARNINGS
 
-//#include <pcl/point_types.h>
-#include <pcl-1.8/pcl/point_types.h>
-//#include <pcl/io/openni2_grabber.h>
-#include <pcl-1.8/pcl/io/openni2_grabber.h>
-//#include <pcl/visualization/cloud_viewer.h>
-#include <pcl-1.8/pcl/visualization/cloud_viewer.h>
+#include <pcl/point_types.h>
+#include <pcl/io/openni2_grabber.h>
+#include <pcl/visualization/cloud_viewer.h>
 
 #include "opencv2/opencv.hpp"
 #include "realsense.h"
