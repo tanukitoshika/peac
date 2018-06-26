@@ -31,6 +31,7 @@
 #include <pcl/point_types.h>
 #include <pcl/io/openni2_grabber.h>
 #include <pcl/visualization/cloud_viewer.h>
+#include <real_sense_grabber.h>
 
 #include "opencv2/opencv.hpp"
 #include "realsense.h"
@@ -111,7 +112,8 @@ public:
 	//start the main loop
 	void run (char* device_name)
 	{
-	    pcl::Grabber* grabber = new pcl::io::OpenNI2Grabber(device_name);
+	    pcl::Grabber* grabber = new pcl::RealSenseGrabber(device_name);
+		//pcl::Grabber* grabber = new pcl::io::OpenNI2Grabber(device_name);
 		boost::function<void (const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr&)> f =
 			boost::bind (&MainLoop::onNewCloud, this, _1);
 
