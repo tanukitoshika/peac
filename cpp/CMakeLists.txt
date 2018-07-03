@@ -10,11 +10,11 @@ project(ahc)
 add_definitions(-DUSE_BOOST_SHARED_PTR)
 
 find_package(OpenCV REQUIRED)
-find_package(PCL 1.2 REQUIRED)
+find_package(PCL REQUIRED)
 find_package(realsense2 REQUIRED)
 
 include_directories("../include")
-include_directories( ${realsense_INCLUDE_DIR} )
+include_directories(${realsense_INCLUDE_DIR})
 include_directories(${PCL_INCLUDE_DIRS})
 link_directories(${PCL_LIBRARY_DIRS})
 add_definitions(${PCL_DEFINITIONS})

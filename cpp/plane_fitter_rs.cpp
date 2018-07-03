@@ -31,10 +31,12 @@
 #include <pcl/point_types.h>
 #include <pcl/io/openni2_grabber.h>
 #include <pcl/visualization/cloud_viewer.h>
-#include <real_sense_grabber.h>
 
 #include "opencv2/opencv.hpp"
 #include "realsense.h"
+
+//#include <pcl-1.8/pcl/io/real_sense_grabber.h>
+#include <pcl-1.8/pcl/io/real_sense_2_grabber.h>
 
 #include "AHCPlaneFitter.hpp"
 
@@ -71,15 +73,15 @@ public:
 	MainLoop () : done(false) {}
 
 	//process a new frame of point cloud
-        void onNewCloud (const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr &cloud)
+    void onNewCloud (const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr &cloud)
 	{
 		//fill RGB
-	        if(rgb.empty() || rgb.rows!=cloud->height || rgb.cols!=cloud->width) {
-		        rgb.create(cloud->height, cloud->width, CV_8UC3);
+	    if(rgb.empty() || rgb.rows!=cloud->height || rgb.cols!=cloud->width) {
+		    rgb.create(cloud->height, cloud->width, CV_8UC3);
 			seg.create(cloud->height, cloud->width, CV_8UC3);
 		}
 		for(int i=0; i<(int)cloud->height; ++i) {
-		        for(int j=0; j<(int)cloud->width; ++j) {
+		    for(int j=0; j<(int)cloud->width; ++j) {
 				const pcl::PointXYZRGBA& p=cloud->at(j,i);
 				if(!pcl_isnan(p.z)) {
 					rgb.at<cv::Vec3b>(i,j)=cv::Vec3b(p.b,p.g,p.r);
@@ -112,38 +114,41 @@ public:
 	//start the main loop
 	void run (char* device_name)
 	{
-	    pcl::Grabber* grabber = new pcl::RealSenseGrabber(device_name);
+	    pcl::Grabber* grabber = new pcl::RealSense2Grabber(device_name);
 		//pcl::Grabber* grabber = new pcl::io::OpenNI2Grabber(device_name);
 		boost::function<void (const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr&)> f =
 			boost::bind (&MainLoop::onNewCloud, this, _1);
-
+		std::cout << "grabber" << std::endl;
 		grabber->registerCallback(f);
-
+		std::cout << "grabber2" << std::endl;
 		//grabbing loop
 		grabber->start();
-
+		std::cout << "grabber3" << std::endl;
 		cv::namedWindow("rgb");
 		cv::namedWindow("seg");
 		cv::namedWindow("control", cv::WINDOW_NORMAL);
-		
+		std::cout << "grabber4" << std::endl;		
 		int mergeMSETol=(int)pf.params.stdTol_merge,
 			minSupport=(int)pf.minSupport,
 			doRefine=(int)pf.doRefine;
+		std::cout << "grabber5" << std::endl;
 		cv::createTrackbar("epsilon","control", &mergeMSETol, (int)pf.params.stdTol_merge*2);
 		cv::createTrackbar("T_{NUM}","control", &minSupport, pf.minSupport*5);
 		cv::createTrackbar("Refine On","control", &doRefine, 1);
 		cv::createTrackbar("windowHeight","control", &pf.windowHeight, 2*pf.windowHeight);
 		cv::createTrackbar("windowWidth","control", &pf.windowWidth, 2*pf.windowWidth);
-
+		std::cout << "grabber6" << std::endl;
 		//GUI loop
-		while (!done)
-		{
+		while (true){
 			pf.params.stdTol_merge=(double)mergeMSETol;
 			pf.minSupport=minSupport;
 			pf.doRefine=doRefine!=0;
-			onKey(cv::waitKey(1000));
+			const int32_t key = cv::waitKey( 10 );
+        	if( key == 'q' ){
+            	break;
+        	}
 		}
-
+		std::cout << "grabber7" << std::endl;
 		grabber->stop();
 	}
 
@@ -161,9 +166,9 @@ public:
 
 int main (int argc, char** argv)
 {
-        RealSense realsense;
+        //RealSense realsense;
 
-		char device_name[32] = "";
+		char device_name[32] = "817412070477";
 
         if(argc >= 2)
 	{
