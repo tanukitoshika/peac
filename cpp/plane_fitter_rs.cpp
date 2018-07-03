@@ -118,26 +118,26 @@ public:
 		//pcl::Grabber* grabber = new pcl::io::OpenNI2Grabber(device_name);
 		boost::function<void (const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr&)> f =
 			boost::bind (&MainLoop::onNewCloud, this, _1);
-		std::cout << "grabber" << std::endl;
+
 		grabber->registerCallback(f);
-		std::cout << "grabber2" << std::endl;
+
 		//grabbing loop
 		grabber->start();
-		std::cout << "grabber3" << std::endl;
+
 		cv::namedWindow("rgb");
 		cv::namedWindow("seg");
 		cv::namedWindow("control", cv::WINDOW_NORMAL);
-		std::cout << "grabber4" << std::endl;		
+
 		int mergeMSETol=(int)pf.params.stdTol_merge,
 			minSupport=(int)pf.minSupport,
 			doRefine=(int)pf.doRefine;
-		std::cout << "grabber5" << std::endl;
+
 		cv::createTrackbar("epsilon","control", &mergeMSETol, (int)pf.params.stdTol_merge*2);
 		cv::createTrackbar("T_{NUM}","control", &minSupport, pf.minSupport*5);
 		cv::createTrackbar("Refine On","control", &doRefine, 1);
 		cv::createTrackbar("windowHeight","control", &pf.windowHeight, 2*pf.windowHeight);
 		cv::createTrackbar("windowWidth","control", &pf.windowWidth, 2*pf.windowWidth);
-		std::cout << "grabber6" << std::endl;
+
 		//GUI loop
 		while (true){
 			pf.params.stdTol_merge=(double)mergeMSETol;
@@ -148,7 +148,7 @@ public:
             	break;
         	}
 		}
-		std::cout << "grabber7" << std::endl;
+
 		grabber->stop();
 	}
 
