@@ -30,13 +30,11 @@
 
 #include <pcl/point_types.h>
 #include <pcl/io/openni2_grabber.h>
-#include <pcl/visualization/cloud_viewer.h>
 
-#include "opencv2/opencv.hpp"
+#include <opencv2/opencv.hpp>
 #include "realsense.h"
 
-//#include <pcl-1.8/pcl/io/real_sense_grabber.h>
-#include <pcl-1.8/pcl/io/real_sense_2_grabber.h>
+#include <pcl/io/real_sense_2_grabber.h>
 
 #include "AHCPlaneFitter.hpp"
 
@@ -45,7 +43,7 @@ using ahc::utils::Timer;
 // pcl::PointCloud interface for our ahc::PlaneFitter
 template<class PointT>
 struct OrganizedImage3D {
-        const pcl::PointCloud<PointT> &cloud;
+    const pcl::PointCloud<PointT> &cloud;
 	//NOTE: pcl::PointCloud from OpenNI uses meter as unit,
 	//while ahc::PlaneFitter assumes mm as unit!!!
 	const double unitScaleFactor;
@@ -122,7 +120,7 @@ public:
 		grabber->registerCallback(f);
 
 		//grabbing loop
-		grabber->start();
+		grabber->start ();
 
 		cv::namedWindow("rgb");
 		cv::namedWindow("seg");
@@ -139,17 +137,14 @@ public:
 		cv::createTrackbar("windowWidth","control", &pf.windowWidth, 2*pf.windowWidth);
 
 		//GUI loop
-		while (true){
+		while (!done) {
 			pf.params.stdTol_merge=(double)mergeMSETol;
 			pf.minSupport=minSupport;
 			pf.doRefine=doRefine!=0;
-			const int32_t key = cv::waitKey( 10 );
-        	if( key == 'q' ){
-            	break;
-        	}
+			onKey(cv::waitKey(1000));
 		}
 
-		grabber->stop();
+		grabber->stop ();
 	}
 
 	//handle keyboard commands
@@ -166,11 +161,11 @@ public:
 
 int main (int argc, char** argv)
 {
-        //RealSense realsense;
+    //RealSense realsense;
 
-		char device_name[32] = "817412070477";
+	char device_name[32] = "817412070477";
 
-        if(argc >= 2)
+    if(argc >= 2)
 	{
 	  std::memcpy(device_name, argv[1], std::strlen(argv[1]));
 	}
