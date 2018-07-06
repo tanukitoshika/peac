@@ -120,9 +120,9 @@ public:
 		// // //grabbing loop
 		// // grabber->start ();
 
-		// cv::namedWindow("rgb");
-		// cv::namedWindow("seg");
-		// cv::namedWindow("control", cv::WINDOW_NORMAL);
+		cv::namedWindow("rgb");
+		cv::namedWindow("seg");
+		cv::namedWindow("control", cv::WINDOW_NORMAL);
 
 		// if(rgb.empty() || rgb.rows!=cloud->height || rgb.cols!=cloud->width) {
 		//     rgb.create(cloud->height, cloud->width, CV_8UC3);
