@@ -107,8 +107,9 @@ public:
 	{
 		ROS_INFO("Converting the sensor_msgs/PointCloud2 data to pcl/PointCloud");
         // Convert the sensor_msgs/PointCloud2 data to pcl/PointCloud
-        pcl::PointCloud<pcl::PointXYZRGBA> cloud;
-        pcl::fromROSMsg (*input, cloud);
+        pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZRGBA>);
+        pcl::fromROSMsg (*input, *cloud);
+		// pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud(&ex_cloud);
 
 	    // // pcl::Grabber* grabber = new pcl::RealSense2Grabber();
 		// // //pcl::Grabber* grabber = new pcl::io::OpenNI2Grabber(device_name);
@@ -124,38 +125,39 @@ public:
 		cv::namedWindow("seg");
 		cv::namedWindow("control", cv::WINDOW_NORMAL);
 
-		// if(rgb.empty() || rgb.rows!=cloud->height || rgb.cols!=cloud->width) {
-		//     rgb.create(cloud->height, cloud->width, CV_8UC3);
-		// 	seg.create(cloud->height, cloud->width, CV_8UC3);
-		// }
-		// for(int i=0; i<(int)cloud->height; ++i) {
-		//     for(int j=0; j<(int)cloud->width; ++j) {
-		// 		const pcl::PointXYZRGBA& p=cloud->at(j,i);
-		// 		if(!pcl_isnan(p.z)) {
-		// 			rgb.at<cv::Vec3b>(i,j)=cv::Vec3b(p.b,p.g,p.r);
-		// 		} else {
-		// 			rgb.at<cv::Vec3b>(i,j)=cv::Vec3b(255,255,255);//whiten invalid area
-		// 		}
-		// 	}
-		// }
+		if(rgb.empty() || rgb.rows!=cloud->height || rgb.cols!=cloud->width) {
+		    rgb.create(cloud->height, cloud->width, CV_8UC3);
+			seg.create(cloud->height, cloud->width, CV_8UC3);
+		}
+		for(int i=0; i<(int)cloud->height; ++i) {
+		    for(int j=0; j<(int)cloud->width; ++j) {
+				const pcl::PointXYZRGBA& p=cloud->at(j,i);
+				if(!pcl_isnan(p.z)) {
+					rgb.at<cv::Vec3b>(i,j)=cv::Vec3b(p.b,p.g,p.r);
+				} else {
+					rgb.at<cv::Vec3b>(i,j)=cv::Vec3b(255,255,255);//whiten invalid area
+				}
+			}
+		}
 
-		// //run PlaneFitter on the current frame of point cloud
-		// RGBDImage rgbd(*cloud);
-		// Timer timer(1000);
-		// timer.tic();
-		// pf.run(&rgbd, 0, &seg);
-		// double process_ms=timer.toc();
+		//run PlaneFitter on the current frame of point cloud
+		RGBDImage rgbd(*cloud);
+		Timer timer(1000);
+		timer.tic();
+		pf.run(&rgbd, 0, &seg);
+		double process_ms=timer.toc();
 
-		// //blend segmentation with rgb
-		// cv::cvtColor(seg,seg,CV_RGB2BGR);
-		// seg=(rgb+seg)/2.0;
+		//blend segmentation with rgb
+		cv::cvtColor(seg,seg,CV_RGB2BGR);
+		seg=(rgb+seg)/2.0;
 		
-		// //show frame rate
-		// std::stringstream stext;
-		// stext<<"Frame Rate: "<<(1000.0/process_ms)<<"Hz";
-		// cv::putText(seg, stext.str(), cv::Point(15,15), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255,255,255,1));
+		//show frame rate
+		std::stringstream stext;
+		stext<<"Frame Rate: "<<(1000.0/process_ms)<<"Hz";
+		cv::putText(seg, stext.str(), cv::Point(15,15), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255,255,255,1));
 
-		// cv::imshow("rgb", rgb);
+		cv::imshow("rgb", rgb);
+		cv::imshow("seg", seg);
 
 		int mergeMSETol=(int)pf.params.stdTol_merge,
 			minSupport=(int)pf.minSupport,
