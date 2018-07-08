@@ -35,12 +35,33 @@ SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 -------------
 The difference from original source code is following.
-- Update OpenNI version to 2.2
+- ~~Update OpenNI version to 2.2~~
 - Fix some points to compile successfully
+- Apply to RealSense
+- Add some changes to use in ROS environment
 
 My environment is 
-- Ubuntu 16.04.4
-- Linux Kernel 4.13.0-43-generic
+- Ubuntu 16.04.4 LTS
+- Linux Kernel 4.4.0-130-generic
 - GCC 5.4.0
 - PCL 1.8.1
-- OpenNI 2.2 (I installed this module with Xtion2 driver, version June 8 2018 for Linux 64bit)
+- OpenCV 2.4.13 or 3.1.0
+- ROS kinetic
+
+Usage for ROS
+-------------
+Move into your catkin workspace,  
+`$ cd PATH_TO_YOUR_WORKSPACE/src`
+
+Download realsense package to your workspace if you did not, following [here](https://github.com/intel-ros/realsense)
+
+Download this PEAC package into your workspace
+
+
+`$ catkin_make`
+
+Start the realsense node  
+`$ roslaunch realsense2_camera rs_rgbd.launch`
+
+Bring up windows  
+`$ rosrun peac plane_fitter_ros input:=/camera/depth_registered/points`
