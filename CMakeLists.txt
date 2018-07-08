@@ -215,16 +215,5 @@ add_definitions(${PCL_DEFINITIONS})
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
 
-add_executable(talker src/talker.cpp)
-target_link_libraries(talker ${catkin_LIBRARIES})
-add_dependencies(talker peac_generate_messages_cpp)
-
-add_executable(listener src/listener.cpp)
-target_link_libraries(listener ${catkin_LIBRARIES})
-add_dependencies(listener peac_generate_messages_cpp)
-
-add_executable(skelton src/skelton.cpp)
-target_link_libraries(skelton ${catkin_LIBRARIES})
-
 add_executable(plane_fitter_ros src/plane_fitter_ros.cpp)
 target_link_libraries(plane_fitter_ros ${catkin_LIBRARIES} ${PCL_LIBRARIES} ${OpenCV_LIBS})
