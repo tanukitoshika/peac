@@ -46,7 +46,16 @@ My environment is
 - GCC 5.4.0
 - PCL 1.8.1
 - OpenCV 2.4.13 or 3.1.0
-- ROS kinetic
+- ROS Kinetic
+
+Requirement
+-----------
+- ROS Kinetic  
+<http://wiki.ros.org/kinetic/Installation/Ubuntu>
+- OpenCV  
+<https://opencv.org/>
+- intel-ros/realsense  
+<https://github.com/intel-ros/realsense>
 
 Usage for ROS
 -------------
