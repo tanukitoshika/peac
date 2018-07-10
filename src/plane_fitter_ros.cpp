@@ -57,12 +57,6 @@ public:
 	void plane_fitter(const sensor_msgs::PointCloud2ConstPtr& input);
 	void cloud_cb(const sensor_msgs::PointCloud2ConstPtr& input);
 
-	void loopSubscriber(ros::NodeHandle* nh)
-	{
-		ROS_INFO("Initializing Subscribers");
-		ros::Subscriber sub = nh->subscribe ("input", 1, &MainLoop::cloud_cb, this);
-	}
-
 	//process a new frame of point cloud
     void onNewCloud (const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr &cloud)
 	{
