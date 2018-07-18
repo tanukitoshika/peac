@@ -64,6 +64,7 @@ public:
 	    if(rgb.empty() || rgb.rows!=cloud->height || rgb.cols!=cloud->width) {
 		    rgb.create(cloud->height, cloud->width, CV_8UC3);
 			seg.create(cloud->height, cloud->width, CV_8UC3);
+			ROS_INFO("fill RGB");
 		}
 		for(int i=0; i<(int)cloud->height; ++i) {
 		    for(int j=0; j<(int)cloud->width; ++j) {
@@ -142,7 +143,6 @@ public:
 
 int main (int argc, char** argv)
 {
-    bool done = false;
 	MainLoop loop;
 
     // Initialize ROS
